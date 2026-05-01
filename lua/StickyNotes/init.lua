@@ -4,6 +4,7 @@ local M = {}
 M.config = {
     show_title = true,
     notes_dir = vim.fn.stdpath("cache") .. "/StickyNotes",
+    size = 0.5,
     files = {
         global = "StickyNotes_Global.md",
         cwd = function()
@@ -107,8 +108,14 @@ function M.setup(opts)
     end
 
     validate("show_title", "boolean")
+    validate("size", "number")
     validate("notes_dir", "string")
     validate("files", "table")
+
+    if opts.size and (opts.size <= 0 or opts.size >= 1) then
+        opts.size = 0.5
+        vim.notify("[StickyNotes] Invalid range for size", vim.log.levels.WARN)
+    end
 
     M.config = vim.tbl_deep_extend("force", M.config, opts)
 end
