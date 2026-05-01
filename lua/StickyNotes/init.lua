@@ -46,12 +46,14 @@ local function check_note_file(file)
     return note_file_path
 end
 
+-- Opens the floating buffer
 local function open_float(file_path, file_name)
     local curr_win = vim.api.nvim_get_current_win()
     local win_width = vim.api.nvim_win_get_width(curr_win)
     local win_height = vim.api.nvim_win_get_height(curr_win)
     local width = math.floor((win_width * M.config.size) + (1 - M.config.size))
     local height = math.floor((win_height * M.config.size) + (1 - M.config.size))
+
     local note_buf = vim.api.nvim_create_buf(false, true)
 
     local win_opts = {
@@ -77,6 +79,7 @@ local function open_float(file_path, file_name)
     vim.api.nvim_buf_set_option(note_buf, "bufhidden", "wipe")
 end
 
+-- Open the note for the current file
 function M.open_notes(opts)
     if opts.fargs[1] == "global" then
         local note_file_path = check_note_file(M.config.files.global)
@@ -91,7 +94,9 @@ function M.open_notes(opts)
     end
 end
 
+-- Setup
 function M.setup(opts)
+    M.notes_cache_dir = check_cache_dir(M.config.notes_dir)
     if type(opts) ~= "table" then return end
 
     local function validate(key, expected_type)
@@ -101,10 +106,11 @@ function M.setup(opts)
         end
     end
 
-    validate("option", "boolean")
+    validate("show_title", "boolean")
+    validate("notes_dir", "string")
+    validate("files", "table")
 
     M.config = vim.tbl_deep_extend("force", M.config, opts)
-    M.notes_cache_dir = check_cache_dir(M.config.notes_dir)
 end
 
 return M

@@ -1,3 +1,6 @@
+if vim.g.loaded_stickynotes then return end
+vim.g.loaded_stickynotes = 1
+
 local sticky = require("StickyNotes")
 
 -- Open StickyNote
@@ -11,4 +14,4 @@ end, {
 })
 
 -- Default keymap
-vim.keymap.set("n", "<leader>n", "<cmd>StickyNote<CR>", { desc = "Open StickyNote" })
+vim.keymap.set("n", "<leader>n", function() sticky.open_notes() end, { desc = "Open StickyNote" })
