@@ -69,7 +69,11 @@ local function open_float(file_path, file_name)
     }
 
     if M.config.show_title then
-        win_opts.title = file_name
+        if file_name ~= nil then
+            win_opts.title = file_name
+        else
+            win_opts.title = ""
+        end
     end
 
     -- Open window
@@ -83,10 +87,11 @@ end
 -- Open the note for the current file
 function M.open_notes(opts)
     opts = opts or {}
-    if opts.fargs[1] == "global" then
+    local args = vim.split(opts.args or "", " ", { trimempty = true })
+    if args[1] == "global" then
         local note_file_path = check_note_file(M.config.files.global)
         open_float(note_file_path, M.config.files.global)
-    elseif opts.fargs[1] == "manage" then
+    elseif args[1] == "manage" then
         open_float(M.notes_cache_dir)
     else
         local cwd = vim.fs.normalize(M.config.files.cwd())
