@@ -25,7 +25,7 @@ local function check_cache_dir(dir)
     local notes_cache_dir = vim.fs.normalize(dir)
 
     if vim.fn.isdirectory(notes_cache_dir) == 0 then
-        local success = vim.uv.fs_mkdir(notes_cache_dir, tonumber("666", 8))
+        local success = vim.uv.fs_mkdir(notes_cache_dir, 493)   -- 493 = 8x755 for chmod
         if not success then
             vim.notify("[StickyNote] Could not create folder " .. notes_cache_dir, vim.log.levels.ERROR)
         end
@@ -38,7 +38,7 @@ end
 local function check_note_file(file)
     local note_file_path = vim.fs.normalize(M.notes_cache_dir .. '/' .. file)
     if vim.tbl_isempty(vim.fs.find(file, { type = "file", path = M.notes_cache_dir })) then
-        vim.uv.fs_open(note_file_path, "w", tonumber("666", 8), function(err, fd)
+        vim.uv.fs_open(note_file_path, "w", 420, function(err, fd)  -- 420 = 8x644 for chmod
             if err ~= nil or fd == nil then
                 vim.print("[StickyNotes] Could not create note file " .. note_file_path)
                 return
