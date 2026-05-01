@@ -38,7 +38,7 @@ local function check_note_file(file)
     if vim.tbl_isempty(vim.fs.find(file, { type = "file", path = M.notes_cache_dir })) then
         vim.uv.fs_open(note_file_path, "w", tonumber("666", 8), function(err, fd)
             if err ~= nil or fd == nil then
-                vim.notify("[StickyNotes] Could not create note file " .. note_file_path, vim.log.levels.ERROR)
+                vim.print("[StickyNotes] Could not create note file " .. note_file_path)
                 return
             end
             vim.uv.fs_close(fd)
