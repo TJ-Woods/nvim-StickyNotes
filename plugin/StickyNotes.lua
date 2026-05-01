@@ -11,4 +11,4 @@ end, {
 })
 
 -- Default keymap
-vim.keymap.set("n", "<leader>n", "StickyNote", { desc = "Open StickyNote" })
+vim.keymap.set("n", "<leader>n", "<cmd>StickyNote<CR>", { desc = "Open StickyNote" })
