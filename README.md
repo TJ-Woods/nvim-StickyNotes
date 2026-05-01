@@ -8,6 +8,7 @@ require("StickyNotes").setup()
 ```
 
 ## Options
+The following defaults are set and can be modified
 ```Lua
 {
     use_cwd = true,                         -- Whether the current working directory or the immediate parent directory determines a project

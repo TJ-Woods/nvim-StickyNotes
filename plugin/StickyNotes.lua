@@ -14,4 +14,9 @@ end, {
 })
 
 -- Default keymap
+-- Standard - Open note for cwd
 vim.keymap.set("n", "<leader>n", function() sticky.open_notes() end, { desc = "Open StickyNote" })
+-- Global - Open global note
+vim.keymap.set("n", "<leader>ng", "<cmd>StickyNote global<CR>", { desc = "Open the global StickyNote" })
+-- Manage - Open note manager
+vim.keymap.set("n", "<leader>nm", "<cmd>StickyNote manage<CR>", { desc = "Open the note manager" })
