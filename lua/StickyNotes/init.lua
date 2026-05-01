@@ -2,6 +2,7 @@ local M = {}
 
 -- Default configuration
 M.config = {
+    use_cwd = true,
     show_title = true,
     notes_dir = vim.fn.stdpath("cache") .. "/StickyNotes",
     size = 0.5,
@@ -11,6 +12,9 @@ M.config = {
         global = "StickyNotes_Global.md",
         cwd = function()
             return vim.fn.getcwd()
+        end,
+        parent = function()
+            return vim.fn.expand("%:p:h:t")
         end,
         file_name = function(cwd)
             local base_name = vim.fs.basename(cwd)
@@ -96,7 +100,12 @@ function M.open_notes(opts)
     elseif args[1] == "manage" then
         open_float(M.notes_cache_dir)
     else
-        local cwd = vim.fs.normalize(M.config.files.cwd())
+        local cwd = ""
+        if M.config.use_cwd then
+            cwd = vim.fs.normalize(M.config.files.cwd())
+        else
+            cwd = vim.fs.normalize(M.config.files.parent())
+        end
         local file_name = M.config.files.file_name(cwd)
         local note_file_path = check_note_file(file_name)
         open_float(note_file_path, file_name)
