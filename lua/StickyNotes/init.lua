@@ -2,12 +2,13 @@ local M = {}
 
 -- Default configuration
 M.config = {
+    relative = "editor",
     use_cwd = true,
     show_title = true,
     notes_dir = vim.fn.stdpath("cache") .. "/StickyNotes",
     size = 0.5,
-    window_style = "minimal",
-    window_border = "solid",
+    window_style = "",
+    window_border = "single",
     files = {
         global = "StickyNotes_Global.md",
         cwd = function()
@@ -64,12 +65,12 @@ local function open_float(file_path, file_name)
     local note_buf = vim.api.nvim_create_buf(false, true)
 
     local win_opts = {
-        relative = "editor",
+        relative = M.config.reative,
         width = width,
         height = height,
         col = (win_width - width) / 2,
         row = (win_height - height) / 2,
-        focusable = false,
+        focusable = true,
         style = M.config.window_style,
         border = M.config.window_border
     }
@@ -128,6 +129,7 @@ function M.setup(opts)
     validate("size", "number")
     validate("notes_dir", "string")
     validate("files", "table")
+    validate("relative", "string")
 
     if opts.size and (opts.size <= 0 or opts.size >= 1) then
         opts.size = 0.5
