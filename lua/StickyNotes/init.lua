@@ -65,7 +65,7 @@ local function open_float(file_path, file_name)
     local note_buf = vim.api.nvim_create_buf(false, true)
 
     local win_opts = {
-        relative = M.config.reative,
+        relative = M.config.relative,
         width = width,
         height = height,
         col = (win_width - width) / 2,
