@@ -13,6 +13,9 @@ M.config = {
         cwd = function()
             return vim.fn.getcwd()
         end,
+        parent = function()
+            return vim.fn.expand("%:p:h")
+        end,
         file_name = function(cwd)
             local base_name = vim.fs.basename(cwd)
             local parent_base_name = vim.fs.basename(vim.fs.dirname(cwd))
