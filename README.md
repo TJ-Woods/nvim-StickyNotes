@@ -48,5 +48,7 @@ but any renderer should work
 
 
 # Notes
-This plugin was created on and for Linux systems. While Windows and Mac _may_ work,
+* This plugin was created on and for Linux systems. While Windows and Mac _may_ work,
 they have not been tested.
+* Restart is required upon changes to the plugin config options
+
