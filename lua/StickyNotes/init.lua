@@ -9,6 +9,8 @@ M.config = {
     size = 0.5,
     window_style = "",
     window_border = "single",
+    show_foldcolumn = false,
+    show_line_numbers = true,
     files = {
         global = "StickyNotes_Global.md",
         cwd = function()
@@ -84,11 +86,18 @@ local function open_float(file_path, file_name)
     end
 
     -- Open window
-    vim.api.nvim_open_win(note_buf, true, win_opts)
+    local note_win = vim.api.nvim_open_win(note_buf, true, win_opts)
 
     -- Open correct file in buffer
     vim.cmd("edit " .. file_path)
     vim.api.nvim_buf_set_option(note_buf, "bufhidden", "wipe")
+    if not M.config.show_foldcolumn then
+        vim.api.nvim_set_option_value("foldcolumn", "0", { win = note_win })
+    end
+    if not M.config.show_line_numbers then
+        vim.api.nvim_set_option_value("number", "0", { win = note_win })
+        vim.api.nvim_set_option_value("relativenumber", "0", { win = note_win })
+    end
 end
 
 -- Open the note for the current file

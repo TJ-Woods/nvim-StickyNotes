@@ -18,6 +18,22 @@ The following defaults are set and can be modified
     size = 0.5,                             -- Size of the floating window relative to the current window
     window_style = "",                      -- Window style
     window_border = "single",               -- Window border
+    show_foldcolumn = false,                -- Whether the column displaying fold locations is shown
+    show_line_numbers = true,               -- Whether line numbers are shown
+    files = {                               -- Default file locations
+        global = "StickyNotes_Global.md",   -- Name of global file
+        cwd = function()
+            return vim.fn.getcwd()          -- function to get cwd
+        end,
+        parent = function()
+            return vim.fn.expand("%:p:h")   -- function to get parent
+        end,
+        file_name = function(cwd)           -- naming conventions
+            local base_name = vim.fs.basename(cwd)
+            local parent_base_name = vim.fs.basename(vim.fs.dirname(cwd))
+            return parent_base_name .. "_" .. base_name .. ".md"    -- file name format and extension
+        end
+    }
 }
 ```
 
