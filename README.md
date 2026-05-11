@@ -20,6 +20,7 @@ The following defaults are set and can be modified
     window_border = "single",               -- Window border
     show_foldcolumn = false,                -- Whether the column displaying fold locations is shown
     show_line_numbers = true,               -- Whether line numbers are shown
+    exit_key = "",                          -- The key mapped to write and quit StickyNote buffer
     files = {                               -- Default file locations
         global = "StickyNotes_Global.md",   -- Name of global file
         cwd = function()

@@ -11,6 +11,7 @@ M.config = {
     window_border = "single",
     show_foldcolumn = false,
     show_line_numbers = true,
+    exit_key = "",
     files = {
         global = "StickyNotes_Global.md",
         cwd = function()
@@ -87,6 +88,10 @@ local function open_float(file_path, file_name)
 
     -- Open window
     local note_win = vim.api.nvim_open_win(note_buf, true, win_opts)
+    -- Mark the window
+    vim.api.nvim_win_set_var(note_win, "IsStickyNote", true)
+    -- Create Group
+    sticky_group = vim.api.nvim_create_augroup("StickyNoteLogic", { clear = true })
 
     -- Open correct file in buffer
     vim.cmd("edit " .. file_path)
@@ -98,6 +103,24 @@ local function open_float(file_path, file_name)
         vim.api.nvim_set_option_value("number", "0", { win = note_win })
         vim.api.nvim_set_option_value("relativenumber", "0", { win = note_win })
     end
+    if M.config.exit_key ~= "" then
+        vim.api.nvim_create_autocmd( "BufEnter", {
+            group = sticky_group,
+            callback = function()
+                local ok, is_sticky = pcall(vim.api.nvim_win_get_var, 0, "IsStickyNote")
+                if ok and is_sticky then
+                    vim.keymap.set("n", M.config.exit_key, "<cmd>wq<CR>", { desc = "Write and quit StickyNote upon " .. M.config.exit_key })
+                end
+            end,
+        })
+    end
+    vim.api.nvim_create_autocmd( "WinClosed", {
+        group = sticky_group,
+        pattern = tostring(note_win),
+        callback = function()
+            vim.api.nvim_del_augroup_by_id(sticky_group)
+        end
+    })
 end
 
 -- Open the note for the current file
