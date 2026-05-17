@@ -20,7 +20,7 @@ The following defaults are set and can be modified
     window_border = "single",               -- Window border
     show_foldcolumn = false,                -- Whether the column displaying fold locations is shown
     show_line_numbers = true,               -- Whether line numbers are shown
-    exit_key = "",                          -- The key mapped to write and quit StickyNote buffer
+    exit_key = "<Esc>",                     -- The key mapped to write and quit StickyNote buffer
     files = {                               -- Default file locations
         global = "StickyNotes_Global.md",   -- Name of global file
         cwd = function()
@@ -57,5 +57,3 @@ or something more feature-intense
 # Notes
 * This plugin was created on and for Linux systems. While Windows and Mac _may_ work,
 they have not been tested.
-* Restart is required upon changes to the plugin config options
-
