@@ -91,7 +91,7 @@ local function open_float(file_path, file_name)
     -- Mark the window
     vim.api.nvim_win_set_var(note_win, "IsStickyNote", true)
     -- Create Group
-    sticky_group = vim.api.nvim_create_augroup("StickyNoteLogic", { clear = true })
+    local sticky_group = vim.api.nvim_create_augroup("StickyNoteLogic", { clear = true })
 
     -- Open correct file in buffer
     vim.cmd("edit " .. file_path)
@@ -109,7 +109,7 @@ local function open_float(file_path, file_name)
             callback = function()
                 local ok, is_sticky = pcall(vim.api.nvim_win_get_var, 0, "IsStickyNote")
                 if ok and is_sticky then
-                    vim.keymap.set("n", M.config.exit_key, "<cmd>wq<CR>", { desc = "Write and quit StickyNote upon " .. M.config.exit_key, buffer = 0, nowait = true, noremap = true, silent = false })
+                    vim.keymap.set("n", M.config.exit_key, "<cmd>wq<CR>", { desc = "Write and quit StickyNote upon " .. M.config.exit_key, buffer = note_buf, nowait = true, noremap = true, silent = false })
                 end
             end,
         })

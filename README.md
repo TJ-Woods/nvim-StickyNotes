@@ -44,8 +44,14 @@ The following defaults are set and can be modified
 ### Recommended
 Some kind of markdown renderer would be beneficial but is not necessary
 
-I use `"MeanderingProgrammer/render-markdown.nvim"` with this plugin,
-but any renderer should work
+Here are some markdown renderers I have tried out and liked:
+Plain renderers
+- "MeanderingProgrammer/render-markdown.nvim"
+- "OXY2DEV/markview.nvim"
+
+or something more feature-intense
+- "YousefHadder/markdown-plus.nvim"
+
 
 
 # Notes
