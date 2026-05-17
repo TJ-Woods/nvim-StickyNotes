@@ -65,8 +65,12 @@ local function open_float(file_path, file_name)
     local width = math.floor((win_width * M.config.size) + (1 - M.config.size))
     local height = math.floor((win_height * M.config.size) + (1 - M.config.size))
 
-    -- Create an initial scratch buffer
-    local note_buf = vim.api.nvim_create_buf(false, true)
+    -- Get or create buffer for file path
+    local note_buf = vim.fn.bufadd(file_path)
+    vim.fn.bufload(note_buf)
+
+    -- Delete on close to avoid memory leak
+    vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = note_buf })
 
     local win_opts = {
         relative = M.config.relative,
@@ -83,7 +87,7 @@ local function open_float(file_path, file_name)
         win_opts.title = file_name or ""
     end
 
-    -- Open window with scratch buffer
+    -- Open window using file buffer
     local note_win = vim.api.nvim_open_win(note_buf, true, win_opts)
 
     -- Mark the window
@@ -92,34 +96,26 @@ local function open_float(file_path, file_name)
     -- Create Group
     local sticky_group = vim.api.nvim_create_augroup("StickyNoteLogic", { clear = true })
 
-    -- Open file in window
-    vim.cmd("edit " .. file_path)
-
-    -- Get buffer ID of loaded file
-    local actual_buf = vim.api.nvim_get_current_buf()
-
-    vim.api.nvim_buf_set_option(actual_buf, "bufhidden", "wipe")
-
+    -- Options
     if not M.config.show_foldcolumn then
         vim.api.nvim_set_option_value("foldcolumn", "0", { win = note_win })
     end
     if not M.config.show_line_numbers then
-        vim.api.nvim_set_option_value("number", "0", { win = note_win })
-        vim.api.nvim_set_option_value("relativenumber", "0", { win = note_win })
+        vim.api.nvim_set_option_value("number", false, { win = note_win })
+        vim.api.nvim_set_option_value("relativenumber", false, { win = note_win })
     end
 
-    -- Directly map key to file buffer
+    -- Map exit key to target note_buf
     if M.config.exit_key ~= "" then
         vim.keymap.set("n", M.config.exit_key, "<cmd>wq<CR>", {
             desc = "Write and quit StickyNote upon " .. M.config.exit_key,
-            buffer = actual_buf,
+            buffer = note_buf,
             nowait = true,
             noremap = true,
             silent = true
         })
     end
 
-    -- Delete augroup on close
     vim.api.nvim_create_autocmd("WinClosed", {
         group = sticky_group,
         pattern = tostring(note_win),
